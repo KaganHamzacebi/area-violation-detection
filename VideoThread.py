@@ -59,7 +59,7 @@ class VideoThread(QWidget):
 
     def nextFrameSlot(self):
         ret, frame = self.cap.read()
-        if frame:
+        if frame is not None:
             height, width, channels = frame.shape
             self.yoloJobs(frame, height, width)
             self.change_pixmap_signal.emit(frame)
