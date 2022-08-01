@@ -6,8 +6,6 @@ def load_yolo():
     net = cv2.dnn.readNet("darknet/yolov3.weights",
                           "darknet/yolov3.cfg")
 
-    # net = cv2.dnn.readNetFromONNX("darknet/yolov5s.onnx")
-
     net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
     net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
@@ -17,14 +15,6 @@ def load_yolo():
     output_layers = [layer_name for layer_name in net.getUnconnectedOutLayersNames()]
     colors = np.random.uniform(0, 255, size=(len(classes), 3))
     return net, classes, colors, output_layers
-
-
-def load_image(img_path):
-    # image loading
-    img = cv2.imread(img_path)
-    img = cv2.resize(img, None, fx=0.4, fy=0.4)
-    height, width, channels = img.shape
-    return img, height, width, channels
 
 
 def detect_objects(img, net, outputLayers):

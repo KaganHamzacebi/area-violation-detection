@@ -20,9 +20,12 @@ YELLOW = (0, 255, 255)
 RED = (0, 0, 255)
 
 
-def load_yolo(is_cuda):
+def load_yolo():
     # Give the weight files to the model and load the network using them.
     net = cv2.dnn.readNet("darknet/yolov5s.onnx")
+
+    net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+    net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
 
     # Load class names.
     with open("darknet/coco.names", 'rt') as f:

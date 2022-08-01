@@ -1,6 +1,4 @@
-import sys
 import time
-
 import cv2
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QTimer, Qt
@@ -9,8 +7,8 @@ from PyQt5.QtWidgets import QWidget
 from yolov3 import detect_objects, get_box_dimensions, load_yolo, draw_labels
 # from yolov5 import detect_objects, load_yolo, post_process
 
-# model, classes, output_layers = load_yolo(is_cuda)
 model, classes, colors, output_layers = load_yolo()
+# model, classes, output_layers = load_yolo()
 
 
 def yoloDetection(frame, height, width):
@@ -18,10 +16,12 @@ def yoloDetection(frame, height, width):
     boxes, confs, class_ids = get_box_dimensions(outputs, height, width)
     fil_labels = [classes[x] for i, x in enumerate(class_ids) if confs[i] > 0.75]
     fil_boxes = [boxes[i] for i in range(len(class_ids)) if confs[i] > 0.75]
+    # Changes frames with object detection boxes
     # draw_labels(boxes, confs, colors, class_ids, classes, frame)
     return fil_labels, fil_boxes
 
 
+# YoloV5 için
 '''
 def yoloDetection(frame, height, width):
     blob, outputs = detect_objects(frame, model)
@@ -61,7 +61,8 @@ class VideoThread(QWidget):
 
     def nextFrameSlot(self):
         ret, frame = self.cap.read()
-        print(self.curFrame / (time.time() - self.time))
+        # prints FPS values every frame
+        # print(self.curFrame / (time.time() - self.time))
         if frame is not None:
             height, width, channels = frame.shape
             self.yoloJobs(frame, height, width)
